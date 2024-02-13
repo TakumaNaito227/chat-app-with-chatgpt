@@ -1,7 +1,10 @@
 'use client';
 
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { auth } from '../../../../firebase';
+import { useRouter } from 'next/navigation';
 
 type Input = {
     email: string;
@@ -9,14 +12,27 @@ type Input = {
 };
 
 const Register = () => {
+    const router = useRouter();
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm<Input>();
 
-    const onSubmit: SubmitHandler<Input> = async (data: Input) => {
-        console.log(data);
+    const onSubmit: SubmitHandler<Input> = async (data) => {
+        await createUserWithEmailAndPassword(auth, data.email, data.password)
+            .then((UserCredential) => {
+                const user = UserCredential.user;
+                router.push('/auth/login');
+            })
+            .catch((error) => {
+                alert(error.message);
+                if (error.code === 'auth/email-already-in-use') {
+                    alert('すでに登録されているメールアドレスです');
+                } else {
+                    alert(error.message);
+                }
+            });
     };
 
     return (
@@ -54,6 +70,7 @@ const Register = () => {
                         Password
                     </label>
                     <input
+                        type="password"
                         {...register('password', {
                             required: 'パスワードは必須です',
                             pattern: {
@@ -62,7 +79,6 @@ const Register = () => {
                                     '6文字以上20文字以下の英数字記号を含むパスワードを設定してください',
                             },
                         })}
-                        type="text"
                         className="mt-1 border-2 rounded-md w-full p-2"
                     ></input>
                     {errors.password && (
