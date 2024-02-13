@@ -1,10 +1,30 @@
-import { register } from 'module';
+'use client';
+
 import React from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+
+type Input = {
+    email: string;
+    password: string;
+};
 
 const Register = () => {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<Input>();
+
+    const onSubmit: SubmitHandler<Input> = async (data: Input) => {
+        console.log(data);
+    };
+
     return (
         <div className="h-screen flex flex-col items-center justify-center">
-            <form className="bg-white p-8 rounded-lg shadow-md w-95">
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="bg-white p-8 rounded-lg shadow-md w-96"
+            >
                 <h1 className="mb-4 text-2x1 text-gray700 font-medium">
                     新規登録
                 </h1>
@@ -13,18 +33,43 @@ const Register = () => {
                         Email
                     </label>
                     <input
+                        {...register('email', {
+                            required: 'メールアドレスは必須です',
+                            pattern: {
+                                value: /^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/,
+                                message: '不適切なメールアドレスです',
+                            },
+                        })}
                         type="text"
                         className="mt-1 border-2 rounded-md w-full p-2"
                     ></input>
+                    {errors.email && (
+                        <span className="text-red-600 text-sm">
+                            {errors.email.message}
+                        </span>
+                    )}
                 </div>
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-600">
                         Password
                     </label>
                     <input
+                        {...register('password', {
+                            required: 'パスワードは必須です',
+                            pattern: {
+                                value: /^[a-zA-Z0-9.?/-]{6,20}$/,
+                                message:
+                                    '6文字以上20文字以下の英数字記号を含むパスワードを設定してください',
+                            },
+                        })}
                         type="text"
                         className="mt-1 border-2 rounded-md w-full p-2"
                     ></input>
+                    {errors.password && (
+                        <span className="text-red-600 text-sm">
+                            {errors.password.message}
+                        </span>
+                    )}
                 </div>
                 <div className="flex justify-end">
                     <button
