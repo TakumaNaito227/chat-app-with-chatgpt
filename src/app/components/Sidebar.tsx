@@ -1,4 +1,5 @@
 import React from 'react';
+import { BiLogOut } from 'react-icons/bi';
 
 const SideBar = () => {
     return (
@@ -11,11 +12,23 @@ const SideBar = () => {
                     </h1>
                 </div>
                 <ul>
-                    <li className='cursor-pointer border-b p-4 text-slate-100 hover:bg-slate-700 duration-150'>room1</li>
-                    <li className='cursor-pointer border-b p-4 text-slate-100 hover:bg-slate-700 duration-150'>room2</li>
-                    <li className='cursor-pointer border-b p-4 text-slate-100 hover:bg-slate-700 duration-150'>room3</li>
-                    <li className='cursor-pointer border-b p-4 text-slate-100 hover:bg-slate-700 duration-150'>room4</li>
+                    <li className="cursor-pointer border-b p-4 text-slate-100 hover:bg-slate-700 duration-150">
+                        room1
+                    </li>
+                    <li className="cursor-pointer border-b p-4 text-slate-100 hover:bg-slate-700 duration-150">
+                        room2
+                    </li>
+                    <li className="cursor-pointer border-b p-4 text-slate-100 hover:bg-slate-700 duration-150">
+                        room3
+                    </li>
+                    <li className="cursor-pointer border-b p-4 text-slate-100 hover:bg-slate-700 duration-150">
+                        room4
+                    </li>
                 </ul>
+            </div>
+            <div className="text-lg flex items-center justify-evenly mb-2 cursor-pointer p-4 text-slate-100 hover:bg-slate-700 duration-150">
+                <BiLogOut></BiLogOut>
+                <span>Logout</span>
             </div>
         </div>
     );
