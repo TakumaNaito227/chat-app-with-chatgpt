@@ -1,7 +1,27 @@
-import React from 'react';
+'use client';
+
+import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
+import React, { useEffect } from 'react';
 import { BiLogOut } from 'react-icons/bi';
+import { db } from '../../../firebase';
 
 const SideBar = () => {
+    useEffect(() => {
+        const fetchRooms = async () => {
+            const roomCollectionRef = collection(db, 'rooms');
+            const q = query(roomCollectionRef, orderBy('createdAt'));
+            const unsbscribe = onSnapshot(q, (snapshot) => {
+                const rooms = snapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+                console.log(rooms);
+            });
+        }
+
+        fetchRooms();
+    }, []);
+
     return (
         <div className="bg-custom-blue h-full overflow-y-auto px-5 flex flex-col">
             <div className="flex-grow">
